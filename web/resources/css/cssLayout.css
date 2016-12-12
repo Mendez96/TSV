@@ -1,15 +1,18 @@
 
 #top {
     position: relative;
-    background-color: #036fab;
+    background: rgba(106,245,245,0.8);
+    border-radius: 15px;
     color: white;
     padding: 5px;
     margin: 0px 0px 10px 0px;
 }
 
 #bottom {
+    border-radius: 15px;
+    text-align: center;
     position: relative;
-    background-color: #c2dfef;
+    background-color: #DCDEDF;
     padding: 5px;
     margin: 10px 0px 0px 0px;
 }
@@ -22,15 +25,19 @@
 }
 
 #right {
+    
     float: right;
     background-color: #ece3a5;
     padding: 5px;
     width: 150px;
+    
 }
 
 .center_content {
+    background: rgba(208,210,210,0.6);
+    border-radius: 15px;
     position: relative;
-    background-color: ghostwhite;
+    min-height: 450px;
     padding: 5px;
 }
 
@@ -56,6 +63,11 @@
   color: black;
   font-weight : bold;
   text-decoration : underline;
+}
+
+h2{
+    text-align: center;
+  
 }
 
 
