@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 10-Dec-2016 08:34:21 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="modelo.entidad.Sitios" table="sitios" catalog="bdtur" optimistic-lock="version">
+        <id name="idsitios" type="java.lang.Integer">
+            <column name="idsitios" />
+            <generator class="identity" />
+        </id>
+        <property name="nombre" type="string">
+            <column name="nombre" length="45" />
+        </property>
+        <property name="direccion" type="string">
+            <column name="direccion" length="45" />
+        </property>
+        <property name="descripcion" type="string">
+            <column name="Descripcion" length="45" />
+        </property>
+        <set name="viajes" table="viaje" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idsitio" />
+            </key>
+            <one-to-many class="modelo.entidad.Viaje" />
+        </set>
+    </class>
+</hibernate-mapping>

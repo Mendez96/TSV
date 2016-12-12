@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 10-Dec-2016 08:34:21 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="modelo.entidad.Viaje" table="viaje" catalog="bdtur" optimistic-lock="version">
+        <id name="idviaje" type="java.lang.Integer">
+            <column name="idviaje" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="sitios" class="modelo.entidad.Sitios" fetch="select">
+            <column name="idsitio" />
+        </many-to-one>
+        <many-to-one name="usuario" class="modelo.entidad.Usuario" fetch="select">
+            <column name="idusuario" />
+        </many-to-one>
+        <property name="nombreCliente" type="string">
+            <column name="nombre_cliente" length="45" />
+        </property>
+        <property name="nombre" type="string">
+            <column name="nombre" length="45" />
+        </property>
+        <property name="fechaViaje" type="date">
+            <column name="fechaViaje" length="10" />
+        </property>
+        <property name="costo" type="java.lang.Double">
+            <column name="costo" precision="10" />
+        </property>
+        <property name="activo" type="java.lang.Boolean">
+            <column name="activo" />
+        </property>
+        <set name="pagos" table="pago" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idviaje" />
+            </key>
+            <one-to-many class="modelo.entidad.Pago" />
+        </set>
+    </class>
+</hibernate-mapping>

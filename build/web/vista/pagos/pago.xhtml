@@ -1,0 +1,123 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../../plantilla/plantilla.xhtml">
+
+            <ui:define name="content">
+                <h3>LISTADO DE PAGOS</h3>
+                <h:form>
+                    <p:commandButton value="Agregar Pago" actionListener="#{pagoControl.limpiarPago()}" oncomplete="PF('dialogoAgregar').show();" update=":formAgregar"/>
+                    <p:separator/>
+                </h:form>
+                <h:form id="formListado">
+                    <p:dataTable id="tablaPagos" paginator="true" paginatorPosition="bottom" rows="10" var="pago" value="#{pagoControl.listaPagos}" emptyMessage="No existen pagos">
+                        <p:column headerText="CODIGO" style="text-align: center">
+                            <h:outputText value="#{pago.idpago}" />
+                        </p:column>
+                        <p:column headerText="VIAJE">
+                            <h:outputText value="#{pago.viaje.nombre}"/>
+                        </p:column>
+                        <p:column headerText="COMPROBANTE">
+                            <h:outputText value="#{pago.numeroComprobante}"/>
+                        </p:column>
+                        
+                        <p:column headerText="MONTO" style="text-align: right">
+                            <h:outputText value="#{pago.monto}">
+                                <f:convertNumber type="currency" currencySymbol="$" />
+                            </h:outputText>
+                        </p:column>
+ 
+                        <p:column headerText="FECHA PAGO" style="text-align: center">
+                            <h:outputText value="#{pago.fechaPago}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" locale="ES"/>
+                            </h:outputText>
+                        </p:column>
+                        
+                      <p:column headerText="USUARIO">
+                            <h:outputText value="#{pago.usuario.nombreCompleto}"/>
+                        </p:column> 
+                        <p:column headerText="MODIFICAR" style="text-align: center">
+                            <p:commandButton icon="ui-icon-pencil" title="Modificar" oncomplete="PF('dialogoModificar').show();" update=":formModificar">
+                                <f:setPropertyActionListener target="#{pagoControl.pago}" value="#{pago}"/>
+                            </p:commandButton>
+                        </p:column>
+                        <p:column headerText="ELIMINAR" style="text-align: center">
+                            <p:commandButton icon="ui-icon-trash" title="Eliminar" oncomplete="PF('dialogoEliminar').show();" update=":formEliminar">
+                                <f:setPropertyActionListener target="#{pagoControl.pago}" value="#{pago}"/>
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+
+                <h:form id="formAgregar">
+                    <p:dialog id="dlgAgregar" header="Agregar Pago" widgetVar="dialogoAgregar" resizable="false" showEffect="fade" hideEffect="explode" modal="true">
+                        <p:panelGrid columns="2" style="margin: 0 auto;">
+                            
+                            <p:outputLabel value="Viaje:"/>
+                            <p:selectOneMenu value="#{pagoControl.pago.viaje.idviaje}">
+                                <f:selectItem itemLabel="-- Seleccione -- "/>
+                                <f:selectItems value="#{pagoControl.listaViaje}"/>
+                            </p:selectOneMenu>
+
+                            <p:outputLabel value="Comprobante"/>
+                            <p:inputText value="#{pagoControl.pago.numeroComprobante}"/>
+
+                            
+                            <p:outputLabel value="Monto:"/>
+                            <p:inputNumber decimalPlaces="2" symbol="$" decimalSeparator="." thousandSeparator="," value="#{pagoControl.pago.monto}"/>
+
+                          
+                            <p:outputLabel value="Fecha Pago"/>
+                            <p:calendar value="#{pagoControl.pago.fechaPago}"  locale="es" navigator="true" yearRange="c-5:c"/>
+
+                            
+                        </p:panelGrid>
+                        <p:commandButton  value="Guardar" actionListener="#{pagoControl.agregarPago()}" update=":formListado:tablaPagos" oncomplete="PF('dialogoAgregar').hide();"/>
+                        <p:commandButton  value="Cancelar" onclick="PF('dialogoAgregar').hide();"/>
+                    </p:dialog>
+                </h:form>
+
+                <h:form id="formModificar">
+                    <p:dialog id="dlgModificar" header="Modificar Pago" widgetVar="dialogoModificar" resizable="false" showEffect="fade" hideEffect="explode" modal="true">
+                        <p:panelGrid columns="2" style="margin: 0 auto;">
+                            <p:outputLabel value="Viaje:"/>
+                            <p:selectOneMenu value="#{pagoControl.pago.viaje.idviaje}">
+                                <f:selectItem itemLabel="-- Seleccione -- "/>
+                                <f:selectItems value="#{pagoControl.listaViaje}"/>
+                            </p:selectOneMenu>
+
+                            <p:outputLabel value="Comprobante"/>
+                            <p:inputText value="#{pagoControl.pago.numeroComprobante}"/>
+
+                            <p:outputLabel value="Monto:"/>
+                            <p:inputNumber decimalPlaces="2" symbol="$" decimalSeparator="." thousandSeparator="," value="#{pagoControl.pago.monto}"/>
+
+                            <p:outputLabel value="Fecha Pago"/>
+                            <p:calendar value="#{pagoControl.pago.fechaPago}"  locale="es" navigator="true" yearRange="c-5:c"/>
+
+                        </p:panelGrid>
+                        <p:commandButton  value="Guardar" actionListener="#{pagoControl.modificarPago()}" update=":formListado:tablaPagos" oncomplete="PF('dialogoModificar').hide();"/>
+                        <p:commandButton  value="Cancelar" onclick="PF('dialogoModificar').hide();"/>
+                    </p:dialog>
+                </h:form>
+
+                <h:form id="formEliminar">
+                    <p:dialog id="dlgEliminar" header="Eliminar Pago" widgetVar="dialogoEliminar" resizable="false" showEffect="fade" hideEffect="explode" modal="true">
+                        <h:outputText value="Desea eliminar este registro?"/>
+                        <p:commandButton  value="Si" actionListener="#{pagoControl.eliminarPago()}" update=":formListado:tablaPagos" oncomplete="PF('dialogoEliminar').hide();"/>
+                        <p:commandButton  value="No" onclick="PF('dialogoEliminar').hide();"/>
+                    </p:dialog>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
